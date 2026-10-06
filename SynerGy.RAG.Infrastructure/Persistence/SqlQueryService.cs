@@ -66,7 +66,11 @@ public class SqlQueryService : ISqlQueryService
 
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                fila[reader.GetName(i)] =
+                var nombre = reader.GetName(i);
+                if (string.IsNullOrEmpty(nombre) || fila.ContainsKey(nombre))
+                    nombre = $"columna{i + 1}";
+
+                fila[nombre] =
                     reader.IsDBNull(i)
                         ? null
                         : reader.GetValue(i);
