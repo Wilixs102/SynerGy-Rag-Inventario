@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="SynerGy-Rag-Inventario/SynerGy-Rag-Inventario-API.csproj" />
+    <Project Path="SynerGy.RAG.Application/SynerGy.RAG.Application.csproj" />
+    <Project Path="SynerGy.RAG.Domain/SynerGy.RAG.Domain.csproj" />
+    <Project Path="SynerGy.RAG.Infrastructure/SynerGy.RAG.Infrastructure.csproj" Id="259c57db-436f-48f8-8201-fc413e3aee00" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>

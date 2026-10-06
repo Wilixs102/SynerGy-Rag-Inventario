@@ -1,0 +1,6 @@
+@SynerGy_Rag_Inventario_HostAddress = http://localhost:5225
+
+GET {{SynerGy_Rag_Inventario_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

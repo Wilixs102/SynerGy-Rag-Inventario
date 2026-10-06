@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <UseAppHost>false</UseAppHost>
+	  
+    <RootNamespace>SynerGy_Rag_Inventario</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SynerGy.RAG.Application\SynerGy.RAG.Application.csproj" />
+    <ProjectReference Include="..\SynerGy.RAG.Infrastructure\SynerGy.RAG.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
