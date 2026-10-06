@@ -6,42 +6,37 @@ using SynerGy.RAG.Application.Interfaces;
 namespace SynerGy.RAG.Application.UseCases;
 
 /// <summary>
-/// Baseline text-to-SQL: pregunta -> prompt simple -> Ollama -> validación -> SQL Server.
+/// Text-to-SQL: pregunta -> prompt (baseline o ajustado) -> Ollama -> validación -> SQL Server.
 /// </summary>
 public class RagService : IRagService
 {
     private const int MaxFilas = 100;
 
-    private const string PromptBaseline = """
-        Eres un asistente que convierte preguntas en español a T-SQL (SQL Server).
-        Usa únicamente esta vista:
-
-        VistaEquipo(IdEquipo int, Serie varchar, ValorCompra decimal, FechaCompra datetime,
-          NumeroFactura varchar, Qr varchar, NombreMarca varchar, NombreModelo varchar,
-          IdEstadoAsignacion int, NombreCategoria varchar, Descripcion varchar,
-          usuario_custodio_activo varchar, FechaAsignacion datetime, FechaDevolucion datetime,
-          IdUbicacion int, IdEstadoAsignacionHistorial int)
-
-        IdEstadoAsignacion: 1=ASIGNABLE, 2=ASIGNADO, 5=BODEGA, 8=BAJA, 9=DAÑADO, 10=EXTRAVIADO, 11=ROBO.
-
-        Responde SOLO con una consulta SELECT, sin explicaciones ni markdown.
-
-        Pregunta: {pregunta}
-        SQL:
-        """;
-
     private readonly IOllamaClient _ollama;
     private readonly ISqlValidator _validator;
     private readonly ISqlQueryService _sql;
+    private readonly RagOptions _options;
 
     public RagService(
         IOllamaClient ollama,
         ISqlValidator validator,
-        ISqlQueryService sql)
+        ISqlQueryService sql,
+        RagOptions options)
     {
         _ollama = ollama;
         _validator = validator;
         _sql = sql;
+        _options = options;
+    }
+
+    public async Task<(string Sql, long LatenciaMs)> GenerarSqlAsync(
+        string pregunta,
+        CancellationToken cancellationToken = default)
+    {
+        var sw = Stopwatch.StartNew();
+        var prompt = ConstruirPrompt(pregunta);
+        var salida = await _ollama.GenerarAsync(prompt, _options.Temperature, cancellationToken);
+        return (LimpiarSql(salida), sw.ElapsedMilliseconds);
     }
 
     public async Task<RespuestaRag> PreguntarAsync(
@@ -53,9 +48,7 @@ public class RagService : IRagService
 
         try
         {
-            var prompt = PromptBaseline.Replace("{pregunta}", pregunta);
-            var salida = await _ollama.GenerarAsync(prompt, null, cancellationToken);
-            sql = LimpiarSql(salida);
+            (sql, _) = await GenerarSqlAsync(pregunta, cancellationToken);
 
             var rechazo = _validator.Validar(sql);
             if (rechazo is not null)
@@ -68,6 +61,23 @@ public class RagService : IRagService
         {
             return new RespuestaRag(pregunta, sql, [], ex.Message, sw.ElapsedMilliseconds);
         }
+    }
+
+    private string ConstruirPrompt(string pregunta)
+    {
+        pregunta = pregunta.Trim();
+
+        if (_options.Estrategia == EstrategiaPrompt.Baseline)
+            return Prompts.Baseline.Replace("{pregunta}", pregunta);
+
+        var pistas = ConocimientoDominio.Recuperar(pregunta);
+        var bloquePistas = pistas.Count == 0
+            ? string.Empty
+            : "\nPistas del dominio para esta pregunta:\n" + string.Join("\n", pistas.Select(p => "- " + p)) + "\n\n";
+
+        return Prompts.Ajustado
+            .Replace("{pistas}", bloquePistas)
+            .Replace("{pregunta}", pregunta);
     }
 
     private static string LimpiarSql(string salida)

@@ -44,6 +44,7 @@ builder.Services.AddHttpClient<IOllamaClient, OllamaClient>(client =>
 builder.Services.AddSingleton<ISqlValidator>(
     _ => new SqlValidator(["VistaEquipo"]));
 
+builder.Services.AddSingleton(new RagOptions(EstrategiaPrompt.Ajustado, Temperature: 0.1));
 builder.Services.AddScoped<IRagService, RagService>();
 
 var app = builder.Build();
