@@ -1,0 +1,299 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Cuántas laptops hay asignadas?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*2\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuántos equipos hay en bodega?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*5\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuántos equipos están dados de baja?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*8\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Cuántos equipos están dañados?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*9\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Cuántos equipos han sido robados?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*11\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Cuántos equipos están extraviados?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*10\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Cuántos equipos están disponibles para asignar?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*1\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Cuántos monitores hay en total?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%monitor"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Cuántos celulares hay asignados?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*2\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%(celular|m[oó]vil)"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Cuántos mouse hay disponibles para asignar?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*1\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%mouse"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 11,
+    "pregunta": "¿Cuántos equipos de la marca HP hay?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "NombreMarca\\s*(=|LIKE)\\s*N?'%?HP"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 12,
+    "pregunta": "¿Cuántos equipos hay de la marca Microsoft?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "NombreMarca\\s*(=|LIKE)\\s*N?'%?MICROSOFT"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 13,
+    "pregunta": "¿Cuál es el valor total de compra de todos los equipos?",
+    "requeridos": [
+      "SUM\\s*\\(\\s*ValorCompra"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 14,
+    "pregunta": "¿Cuál es el valor total de las laptops?",
+    "requeridos": [
+      "SUM\\s*\\(\\s*ValorCompra",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 15,
+    "pregunta": "¿Cuál es el equipo más caro?",
+    "requeridos": [
+      "(TOP\\s*\\(?\\s*1\\b|MAX\\s*\\()",
+      "ValorCompra"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 16,
+    "pregunta": "Lista los 10 equipos más caros",
+    "requeridos": [
+      "TOP\\s*\\(?\\s*10\\b",
+      "ORDER\\s+BY\\s+ValorCompra\\s+DESC"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 17,
+    "pregunta": "¿Cuántos equipos no tienen número de factura?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "NumeroFactura\\s+IS\\s+NULL"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 18,
+    "pregunta": "¿Cuántos equipos se compraron en 2025?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "(YEAR\\s*\\(\\s*FechaCompra\\s*\\)\\s*=\\s*2025|FechaCompra\\s*(>=|BETWEEN)[^)]*2025)"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 19,
+    "pregunta": "¿Cuántos equipos se compraron en 2023?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "(YEAR\\s*\\(\\s*FechaCompra\\s*\\)\\s*=\\s*2023|FechaCompra\\s*(>=|BETWEEN)[^)]*2023)"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 20,
+    "pregunta": "¿Cuántas laptops hay en bodega?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*5\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 21,
+    "pregunta": "¿Cuántas laptops hay dañadas?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*9\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 22,
+    "pregunta": "¿Cuántas laptops hay disponibles para asignar?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*1\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 23,
+    "pregunta": "¿Cuántos monitores están asignados?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "IdEstadoAsignacion\\s*=\\s*2\\b",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%monitor"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 24,
+    "pregunta": "Muéstrame los equipos asignados a eliza.suasti@synergy-apx.com",
+    "requeridos": [
+      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?eliza\\.suasti"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 25,
+    "pregunta": "¿Cuántos equipos tiene asignados jessica.guaman@synergy-apx.com?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?jessica\\.guaman"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 26,
+    "pregunta": "¿Cuántos equipos hay por categoría?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "GROUP\\s+BY\\s+NombreCategoria"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 27,
+    "pregunta": "¿Cuántos equipos hay por estado de asignación?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "GROUP\\s+BY\\s+IdEstadoAsignacion"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 28,
+    "pregunta": "¿Qué marca tiene más equipos?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "GROUP\\s+BY\\s+NombreMarca",
+      "ORDER\\s+BY[^;]*DESC",
+      "TOP\\s*\\(?\\s*1\\b"
+    ],
+    "prohibidos": []
+  },
+  {
+    "id": 29,
+    "pregunta": "¿Cuántos teclados hay en total?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%teclado"
+    ],
+    "prohibidos": [
+      "NombreModelo\\s+LIKE"
+    ]
+  },
+  {
+    "id": 30,
+    "pregunta": "¿Cuántos equipos se asignaron en 2026?",
+    "requeridos": [
+      "COUNT\\s*\\(",
+      "(YEAR\\s*\\(\\s*FechaAsignacion\\s*\\)\\s*=\\s*2026|FechaAsignacion\\s*(>=|BETWEEN)[^)]*2026)"
+    ],
+    "prohibidos": []
+  }
+]
