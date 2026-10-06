@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asistente de Inventario</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; color: #1f2937; }
+  h1 { font-size: 1.4rem; }
+  form { display: flex; gap: .5rem; }
+  input { flex: 1; padding: .6rem; font-size: 1rem; border: 1px solid #9ca3af; border-radius: 6px; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; border: 0; border-radius: 6px; background: #2563eb; color: #fff; cursor: pointer; }
+  button:disabled { background: #93c5fd; cursor: wait; }
+  #sql { background: #111827; color: #e5e7eb; padding: .8rem; border-radius: 6px; white-space: pre-wrap; margin-top: 1rem; }
+  #error { color: #b91c1c; margin-top: 1rem; }
+  #meta { color: #6b7280; font-size: .85rem; margin-top: .5rem; }
+  table { border-collapse: collapse; margin-top: 1rem; width: 100%; font-size: .9rem; }
+  th, td { border: 1px solid #d1d5db; padding: .35rem .5rem; text-align: left; }
+  th { background: #f3f4f6; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>Asistente de Inventario de Activos</h1>
+<form id="f">
+  <input id="q" placeholder="Ej: ¿Cuántas laptops hay asignadas?" autofocus required>
+  <button id="b">Preguntar</button>
+</form>
+<div id="meta"></div>
+<pre id="sql" hidden></pre>
+<div id="error"></div>
+<div class="wrap"><table id="t"></table></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+$('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('b').disabled = true;
+  $('b').textContent = 'Consultando...';
+  $('error').textContent = '';
+  $('sql').hidden = true;
+  $('t').innerHTML = '';
+  $('meta').textContent = '';
+  try {
+    const r = await fetch('/api/preguntas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pregunta: $('q').value })
+    });
+    const d = await r.json();
+    if (d.sql) { $('sql').textContent = d.sql; $('sql').hidden = false; }
+    if (d.error) $('error').textContent = d.error;
+    $('meta').textContent = `${d.filas?.length ?? 0} fila(s) · ${d.latenciaMs} ms`;
+    if (d.filas?.length) {
+      const cols = Object.keys(d.filas[0]);
+      const th = '<tr>' + cols.map(c => `<th>${esc(c)}</th>`).join('') + '</tr>';
+      const tr = d.filas.map(f => '<tr>' + cols.map(c => `<td>${esc(f[c] ?? '')}</td>`).join('') + '</tr>').join('');
+      $('t').innerHTML = th + tr;
+    }
+  } catch (err) {
+    $('error').textContent = 'Error: ' + err.message;
+  } finally {
+    $('b').disabled = false;
+    $('b').textContent = 'Preguntar';
+  }
+});
+
+function esc(v) {
+  return String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+</script>
+</body>
+</html>

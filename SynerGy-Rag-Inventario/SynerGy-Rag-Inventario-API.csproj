@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	
 
@@ -9,6 +9,7 @@
 	  <UseAppHost>false</UseAppHost>
 	  
     <RootNamespace>SynerGy_Rag_Inventario</RootNamespace>
+    <UserSecretsId>3045dc74-5e36-472c-858b-947dd28b8cfd</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
