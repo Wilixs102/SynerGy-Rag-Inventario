@@ -1,0 +1,392 @@
+{
+  "fecha_corte": "2026-10-29",
+  "total": 95,
+  "superadas": 95,
+  "fallidas": 0,
+  "sin_ejecutar": 0,
+  "robustez_sql": 30,
+  "alcance_robustez": "30 cargas SQL adversariales del conjunto declarado, no una garantía universal.",
+  "comando": "dotnet test SynerGy-Rag-Inventario.slnx -c Release --logger trx",
+  "pruebas": [
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT @@VERSION FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT dbo.funcionPrivada(Serie) FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.BaselineNoRecuperaContextoAunqueHayaRecuperador",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM VistaEquipo WITH (NOLOCK)\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.CatalogoRealEsValidoEIndexacionRecibeTodasLasEntradas",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NingunaActaElegibleNoBuscaCoincidenciasDeOtraPersona",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Dame los equipos de laptops\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT @@VERSION FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.FalloRecuperacionNoEjecutaNiGeneraSqlSinContexto",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"DELETE FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo -- comentario\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Dame los equipos de los ratones\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.CorreoExplicitoTienePrioridad",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"Muéstrame los equipos asignados a María Pérez\", nombre: \"María Pérez\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NoIgnoraFiltrosQueLaPlantillaNoEntiende(pregunta: \"Lista las laptops que no están asignadas\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.MouseIncluyeKitsYLaptopExigeCategoriaCompatible",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.NombreNoResueltoPideAclaracionSinLlamarModeloNiInventario(cantidad: 0)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.EmbeddingRechazaDimensionesIncorrectasOVectorCero(dimensiones: 768, cero: True)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.IndexacionFallidaNoReemplazaCatalogoAnterior",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo SELECT * FROM VistaEquip\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT t.name FROM VistaEquipo v, sys.tables t\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT /* comentario */ * FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"Dame los equipos asignados de Juan Pérez\", nombre: \"Juan Pérez\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT NEXT VALUE FOR dbo.secuencia FROM VistaEqui\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"ALTER TABLE VistaEquipo ADD x int\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NoIgnoraFiltrosQueLaPlantillaNoEntiende(pregunta: \"¿Cuántas laptops se compraron en 2025?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo v JOIN sys.objects o ON \"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM otraBase.dbo.VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.ConsultasHabitualesCreanSqlValido(pregunta: \"¿Cuántos mouses hay?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo FOR JSON AUTO\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo; SELECT * FROM sys.table\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo UNION ALL SELECT * FROM \"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.EmbeddingUsaApiEmbedModeloLocalYRechazaTruncamiento",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.EmbeddingRechazaDimensionesIncorrectasOVectorCero(dimensiones: 3, cero: False)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"Equipos del compañero José Muñoz\", nombre: \"José Muñoz\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.VectorDeshabilitadoNoLlamaOllamaNiSql",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"GRANT SELECT ON VistaEquipo TO public\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT SYSTEM_USER FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.CatalogoConIdsDuplicadosSeRechazaAntesDeOllama",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Busca actas de devolución\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.ConsultasHabitualesCreanSqlValido(pregunta: \"Total de laptops y mouses\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"¿Cuántos equipos tiene Ana López?\", nombre: \"Ana López\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"Laptops asignadas a Ana López con marca HP\", nombre: \"Ana López\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.EmbeddingRechazaDimensionesIncorrectasOVectorCero(dimensiones: 0, cero: False)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM VistaEquipo; DELETE FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.VectorHabilitadoRecuperaAntesDeGenerarSqlYExponeEvidencia",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.PreguntaDeActasNoSeEjecutaComoInventario",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM dbo.Colaborador\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"UPDATE VistaEquipo SET Serie='x'\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserAceptaConsultasLegitimas(sql: \"SELECT COUNT(*) AS total FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM dbo.Colaborador\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.NombreNoResueltoPideAclaracionSinLlamarModeloNiInventario(cantidad: 2)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.ConsultasHabitualesCreanSqlValido(pregunta: \"Dame el total de las laptops\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT dbo.unaFuncion(Serie) FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.AlmacenRechazaVectorInvalidoAntesDeAbrirConexion",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"EXEC sp_executesql N'SELECT * FROM VistaEquipo'\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM OtraBase.dbo.VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.RutaValidadaNoEsperaGeneracionDelModelo",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"DROP TABLE VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserAceptaConsultasLegitimas(sql: \"SELECT SUM(ValorCompra) AS total FROM [dbo].[Vista\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.ErrorOllamaNoSeConvierteEnVectorVacio",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserAceptaConsultasLegitimas(sql: \"SELECT NombreMarca FROM VistaEquipo GROUP BY Nombr\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NoIgnoraFiltrosQueLaPlantillaNoEntiende(pregunta: \"Laptops por ubicación\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo WITH (NOLOCK)\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NoIgnoraFiltrosQueLaPlantillaNoEntiende(pregunta: \"¿Cuántas laptops DELL hay?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.TextoDeActaSeLimpiaSinIdentidadesNiHtml",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Busca actas de entrega\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM OPENROWSET('SQLNCLI','x','SELECT 1')\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.RechazoSqlConservaContextoYNoEjecutaConsulta",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"INSERT INTO VistaEquipo (IdEquipo) VALUES (1)\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM rrhh.VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * INTO copia FROM VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"TRUNCATE TABLE VistaEquipo\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo v CROSS APPLY OPENJSON('\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.BusquedaVectorialTests.CancelacionSePropagaSinGenerarSql",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Dame los equipos de las laptops\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.PersonaUnicaUsaCorreoRealYCanalSqlRestringido",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.NoConfundeFiltrosConPersonas(pregunta: \"¿Cuántos equipos de la marca HP hay?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.NoIgnoraFiltrosQueLaPlantillaNoEntiende(pregunta: \"¿Cuál es el valor total de las laptops?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"¿Qué equipos tiene Ana López?\", nombre: \"Ana López\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserAceptaConsultasLegitimas(sql: \"SELECT TOP (10) Serie FROM dbo.VistaEquipo ORDER B\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.ConsultasHabitualesCreanSqlValido(pregunta: \"Lista las laptops asignadas\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM VistaEquipo ORDER BY IdEquipo LIMIT \"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT (SELECT COUNT(*) FROM sys.tables) FROM Vist\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"CREATE TABLE copia (x int)\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.TopKVectorialNoSePresentaComoTotalDeActas",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.NoConfundeFiltrosConPersonas(pregunta: \"Dame los equipos de bodega\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.DetectaNombresEnPreguntasHabituales(pregunta: \"Equipos de María Pérez, incluye marca y serie\", nombre: \"María Pérez\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM OtroServidor.OtraBase.dbo.VistaEquip\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.RobustezEntregaTests.BloqueaTreintaEscenariosSqlAdversariales(sql: \"SELECT * FROM VistaEquipo v, sys.tables t\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.NoConfundeFiltrosConPersonas(pregunta: \"¿Cuántas laptops hay asignadas?\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * FROM VistaEquipo SELECT name FROM \\\"sys\\\"\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.ConsultasHabitualesCreanSqlValido(pregunta: \"Muestra las 5 laptops disponibles\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.InventarioYActasTests.CategoriasPluralesYTiposActaNoSonPersonas(pregunta: \"Dame los equipos de mouses\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "SynerGy.RAG.Tests.CustodiosYSeguridadTests.ParserBloqueaEvasionesYFuentesNoAutorizadas(sql: \"SELECT * INTO copia FROM VistaEquipo\")",
+      "resultado": "Passed"
+    }
+  ]
+}

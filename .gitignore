@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Datos y configuraciones privadas de ejecución
+.env
+.env.*
+!.env.example
+**/secrets.json
+.local/
+tmp/
+__pycache__/
+*.pyc

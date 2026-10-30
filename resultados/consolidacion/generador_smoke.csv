@@ -1,0 +1,10 @@
+config,id_pregunta,rep,sql_valida,componentes_ok,latencia_ms,sql,error
+baseline,1,1,1,0,46166,SELECT COUNT(*) FROM VistaEquipo WHERE IdEstadoAsignacion = 2 AND NombreModelo LIKE '%laptop%',
+baseline,2,1,1,1,6276,SELECT COUNT(*) FROM VistaEquipo WHERE IdEstadoAsignacion = 5,
+baseline,3,1,1,1,6142,SELECT COUNT(*) FROM VistaEquipo WHERE IdEstadoAsignacion = 8,
+prompt_enriquecido,1,1,1,1,75824,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 2 AND (NombreCategoria COLLATE Latin1_General_100_CI_AI = N'LAPTOP' OR (NombreCategoria COLLATE Latin1_General_100_CI_AI = N'COMPUTADOR' AND Descripcion COLLATE Latin1_General_100_CI_AI LIKE N'%Laptop%')),
+prompt_enriquecido,2,1,1,1,6068,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 5,
+prompt_enriquecido,3,1,1,1,5511,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 8,
+ajustado,1,1,1,1,31521,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 2 AND (NombreCategoria COLLATE Latin1_General_100_CI_AI = N'LAPTOP' OR (NombreCategoria COLLATE Latin1_General_100_CI_AI = N'COMPUTADOR' AND Descripcion COLLATE Latin1_General_100_CI_AI LIKE N'%Laptop%')),
+ajustado,2,1,1,1,6588,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 5,
+ajustado,3,1,1,1,5682,SELECT COUNT(*) AS total FROM VistaEquipo WHERE IdEstadoAsignacion = 8,

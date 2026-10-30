@@ -5,7 +5,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*2\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%lap"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -70,7 +70,7 @@
     "pregunta": "¿Cuántos monitores hay en total?",
     "requeridos": [
       "COUNT\\s*\\(",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%monitor"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%monitor"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -82,7 +82,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*2\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%(celular|m[oó]vil)"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%(celular|m[oó]vil)"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -94,7 +94,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*1\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%mouse"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%mouse"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -131,7 +131,7 @@
     "pregunta": "¿Cuál es el valor total de las laptops?",
     "requeridos": [
       "SUM\\s*\\(\\s*ValorCompra",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%lap"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -188,7 +188,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*5\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%lap"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -200,7 +200,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*9\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%lap"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -212,7 +212,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*1\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%lap"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%lap"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -224,7 +224,7 @@
     "requeridos": [
       "COUNT\\s*\\(",
       "IdEstadoAsignacion\\s*=\\s*2\\b",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%monitor"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%monitor"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"
@@ -232,18 +232,18 @@
   },
   {
     "id": 24,
-    "pregunta": "Muéstrame los equipos asignados a eliza.suasti@synergy-apx.com",
+    "pregunta": "Muéstrame los equipos asignados a persona24@example.test",
     "requeridos": [
-      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?eliza\\.suasti"
+      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?persona24"
     ],
     "prohibidos": []
   },
   {
     "id": 25,
-    "pregunta": "¿Cuántos equipos tiene asignados jessica.guaman@synergy-apx.com?",
+    "pregunta": "¿Cuántos equipos tiene asignados persona25@example.test?",
     "requeridos": [
       "COUNT\\s*\\(",
-      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?jessica\\.guaman"
+      "usuario_custodio_activo\\s*(=|LIKE)\\s*N?'%?persona25"
     ],
     "prohibidos": []
   },
@@ -281,7 +281,7 @@
     "pregunta": "¿Cuántos teclados hay en total?",
     "requeridos": [
       "COUNT\\s*\\(",
-      "(NombreCategoria|Descripcion)\\s+LIKE\\s+N?'%teclado"
+      "(NombreCategoria|Descripcion)(?:\\s+COLLATE\\s+\\w+)?\\s+LIKE\\s+N?'%teclado"
     ],
     "prohibidos": [
       "NombreModelo\\s+LIKE"

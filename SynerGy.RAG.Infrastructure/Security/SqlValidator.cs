@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using SynerGy.RAG.Application.Interfaces;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace SynerGy.RAG.Infrastructure.Security;
 
@@ -29,21 +30,46 @@ public partial class SqlValidator : ISqlValidator
         if (Prohibidas().IsMatch(sql))
             return "contiene palabras reservadas no permitidas";
 
-        var objetos = Fuentes().Matches(sql)
-            .Select(m => m.Groups[1].Value.Replace("[", "").Replace("]", ""))
-            .Select(n => n.StartsWith("dbo.", StringComparison.OrdinalIgnoreCase) ? n[4..] : n)
-            .ToList();
-
-        if (objetos.Count == 0)
-            return "no se detectó ninguna tabla o vista";
-
-        var noPermitido = objetos.FirstOrDefault(o => !_permitidos.Contains(o));
-        return noPermitido is null ? null : $"objeto no permitido: {noPermitido}";
+        var arbol = SqlSyntax.Parsear(sql);
+        if (arbol is null) return "sintaxis T-SQL inválida";
+        if (arbol.Batches.Count != 1 || arbol.Batches[0].Statements.Count != 1 ||
+            arbol.Batches[0].Statements[0] is not SelectStatement)
+            return "solo se permite una sentencia SELECT";
+        var nodos = SqlSyntax.Fragmentos(arbol).ToList();
+        var tablas = nodos.OfType<NamedTableReference>().ToList();
+        if (tablas.Count == 0) return "no se detectó ninguna tabla o vista";
+        foreach (var tabla in tablas)
+        {
+            var ids = tabla.SchemaObject.Identifiers;
+            if (ids.Count is < 1 or > 2 ||
+                (ids.Count == 2 && !ids[0].Value.Equals("dbo", StringComparison.OrdinalIgnoreCase)) ||
+                !_permitidos.Contains(ids[^1].Value) || tabla.TableHints.Count > 0)
+                return "objeto o indicación de tabla no permitido";
+        }
+        foreach (var nodo in nodos)
+        {
+            if (nodo is TableReference && nodo is not NamedTableReference and not QueryDerivedTable
+                and not QualifiedJoin and not UnqualifiedJoin and not JoinParenthesisTableReference)
+                return "tipo de fuente no permitido";
+            if (nodo is VariableReference || nodo.GetType().Name is "GlobalVariableExpression" or "NextValueForExpression" or "SelectSetVariable" or "ParameterlessCall")
+                return "variables o secuencias no permitidas";
+            if (nodo.GetType().Name.Contains("OptimizerHint", StringComparison.Ordinal) ||
+                nodo.GetType().Name.EndsWith("ForClause", StringComparison.Ordinal))
+                return "opciones de ejecución o serialización no permitidas";
+            if (nodo is FunctionCall funcion && (funcion.CallTarget is not null ||
+                !FuncionesPermitidas.Contains(funcion.FunctionName.Value)))
+                return "función no permitida";
+        }
+        return null;
     }
 
     [GeneratedRegex(@"\b(INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|TRUNCATE|EXEC|EXECUTE|MERGE|GRANT|REVOKE|INTO|OPENROWSET|OPENQUERY|XP_\w+|SP_\w+)\b", RegexOptions.IgnoreCase)]
     private static partial Regex Prohibidas();
 
-    [GeneratedRegex(@"\b(?:FROM|JOIN)\s+([\[\]\w\.]+)", RegexOptions.IgnoreCase)]
-    private static partial Regex Fuentes();
+    private static readonly HashSet<string> FuncionesPermitidas = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "COUNT", "COUNT_BIG", "SUM", "AVG", "MIN", "MAX", "YEAR", "MONTH", "DAY", "GETDATE",
+        "GETUTCDATE", "SYSDATETIME", "ISNULL", "NULLIF", "UPPER", "LOWER", "LTRIM", "RTRIM",
+        "LEN", "ROUND", "ABS", "CEILING", "FLOOR", "DATEDIFF", "DATEADD", "CONCAT", "REPLACE"
+    };
 }

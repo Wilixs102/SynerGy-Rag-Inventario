@@ -1,0 +1,62 @@
+{
+  "fecha_corte": "2026-10-29",
+  "alcance": "Pruebas funcionales seleccionadas en la instalación autorizada. No es exactitud global ni evaluación ciega.",
+  "casos": [
+    {
+      "id": "I01",
+      "tipo": "conteo_laptop",
+      "resultado": "superado",
+      "metodo": "consulta_validada",
+      "latencia_ms": 5794
+    },
+    {
+      "id": "I02",
+      "tipo": "conteo_mouse",
+      "resultado": "superado",
+      "metodo": "consulta_validada",
+      "latencia_ms": 224
+    },
+    {
+      "id": "I03",
+      "tipo": "lista_laptop",
+      "resultado": "superado",
+      "metodo": "consulta_validada",
+      "latencia_ms": 290
+    },
+    {
+      "id": "I04",
+      "tipo": "asignadas",
+      "resultado": "superado",
+      "metodo": "consulta_validada",
+      "latencia_ms": 241
+    },
+    {
+      "id": "I05",
+      "tipo": "sin_persona",
+      "resultado": "superado",
+      "metodo": "sin_generacion",
+      "latencia_ms": 1492
+    },
+    {
+      "id": "I06",
+      "tipo": "ambiguo",
+      "resultado": "superado",
+      "metodo": "sin_generacion",
+      "latencia_ms": 770
+    },
+    {
+      "id": "I07",
+      "tipo": "actas",
+      "resultado": "superado",
+      "metodo": "busqueda_vectorial_actas",
+      "latencia_ms": 272
+    },
+    {
+      "id": "I08",
+      "tipo": "no_total_vectorial",
+      "resultado": "superado",
+      "metodo": "sin_generacion",
+      "latencia_ms": 0
+    }
+  ]
+}

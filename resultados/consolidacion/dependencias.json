@@ -1,0 +1,6 @@
+{
+  "proyectos": 6,
+  "comando": "dotnet list package --vulnerable --include-transitive",
+  "fecha_corte": "2026-10-29",
+  "paquetes_con_vulnerabilidades_conocidas": 0
+}

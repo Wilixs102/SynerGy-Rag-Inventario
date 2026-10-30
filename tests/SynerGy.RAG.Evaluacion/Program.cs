@@ -14,6 +14,8 @@ using SynerGy.RAG.Application.UseCases;
 using SynerGy.RAG.Infrastructure.Configuration;
 using SynerGy.RAG.Infrastructure.Ollama;
 using SynerGy.RAG.Infrastructure.Security;
+using SynerGy.RAG.Infrastructure.Persistence;
+using SynerGy.RAG.Infrastructure.Rag;
 
 var argumentos = ParsearArgumentos(args);
 int reps = int.Parse(argumentos.GetValueOrDefault("reps", "3"));
@@ -27,9 +29,10 @@ var configuraciones = new Dictionary<string, RagOptions>
     ["baseline"] = new(EstrategiaPrompt.Baseline, 0.3),
     ["prompt_enriquecido"] = new(EstrategiaPrompt.Ajustado, 0.3),
     ["ajustado"] = new(EstrategiaPrompt.Ajustado, 0.1),
+    ["vectorial"] = new(EstrategiaPrompt.Ajustado, 0.1),
 };
 
-var seleccion = argumentos.GetValueOrDefault("configs", string.Join(',', configuraciones.Keys))
+var seleccion = argumentos.GetValueOrDefault("configs", "baseline,prompt_enriquecido,ajustado")
     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 var preguntas = JsonSerializer.Deserialize<List<Pregunta>>(
@@ -40,6 +43,26 @@ if (max > 0) preguntas = preguntas.Take(max).ToList();
 var http = new HttpClient { BaseAddress = new Uri(url), Timeout = TimeSpan.FromSeconds(300) };
 var ollama = new OllamaClient(http, Options.Create(new OllamaOptions { BaseUrl = url, Modelo = modelo }));
 var validador = new SqlValidator(["VistaEquipo"]);
+IRecuperadorContexto? recuperador = null;
+if (seleccion.Contains("vectorial"))
+{
+    var cadenaContexto = Environment.GetEnvironmentVariable("ConnectionStrings__ContextoVectorial");
+    if (string.IsNullOrWhiteSpace(cadenaContexto))
+        throw new InvalidOperationException("La evaluación vectorial requiere ConnectionStrings__ContextoVectorial (solo lectura).");
+    var opcionesVector = new VectorOptions
+    {
+        Habilitada = true,
+        ModeloEmbedding = Environment.GetEnvironmentVariable("BusquedaVectorial__ModeloEmbedding") ?? "nomic-embed-text",
+        VersionCatalogo = Environment.GetEnvironmentVariable("BusquedaVectorial__VersionCatalogo") ?? "inventario-v2",
+        TopK = int.Parse(Environment.GetEnvironmentVariable("BusquedaVectorial__TopK") ?? "5"),
+        DistanciaMaxima = double.Parse(Environment.GetEnvironmentVariable("BusquedaVectorial__DistanciaMaxima") ?? "0.65",
+            System.Globalization.CultureInfo.InvariantCulture)
+    };
+    opcionesVector.Validar();
+    var vectorOptions = Options.Create(opcionesVector);
+    recuperador = new RecuperadorContexto(new OllamaEmbeddingClient(http, vectorOptions),
+        new SqlContextoStore(cadenaContexto, vectorOptions), vectorOptions);
+}
 
 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(salida))!);
 await using var escritor = new StreamWriter(salida, append: false, new UTF8Encoding(true));
@@ -50,7 +73,8 @@ foreach (var nombre in seleccion)
 {
     var opciones = configuraciones[nombre];
     // Servicio sin acceso a BD: solo se usa GenerarSqlAsync.
-    var rag = new RagService(ollama, validador, new SinBaseDeDatos(), opciones);
+    var rag = new RagService(ollama, validador, new SinBaseDeDatos(), opciones,
+        nombre == "vectorial" ? recuperador : null);
 
     foreach (var p in preguntas)
     {

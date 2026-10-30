@@ -11,4 +11,5 @@ public enum EstrategiaPrompt
 
 public record RagOptions(
     EstrategiaPrompt Estrategia = EstrategiaPrompt.Ajustado,
-    double? Temperature = 0.1);
+    double? Temperature = 0.1,
+    bool UsarConsultasValidadas = false);

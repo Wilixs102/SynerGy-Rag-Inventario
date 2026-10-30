@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using SynerGy.RAG.Application.Interfaces;
+using System.Data;
+using SynerGy.RAG.Infrastructure.Security;
 
 namespace SynerGy.RAG.Infrastructure.Persistence;
 
@@ -42,6 +44,21 @@ public class SqlQueryService : ISqlQueryService
     public async Task<IReadOnlyList<Dictionary<string, object?>>> ConsultarAsync(
         string sql,
         CancellationToken cancellationToken = default)
+        => await EjecutarAsync(sql, null, cancellationToken);
+
+    public async Task<IReadOnlyList<Dictionary<string, object?>>> ConsultarCustodioAsync(
+        string sql, string correo, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(correo);
+        var consulta = SqlSyntax.RestringirACustodio(sql);
+        return await EjecutarAsync("""
+            SELECT * INTO #EquiposCustodio FROM dbo.VistaEquipo
+            WHERE usuario_custodio_activo = @correo AND IdEstadoAsignacion = 2;
+            """ + consulta, correo, cancellationToken);
+    }
+
+    private async Task<IReadOnlyList<Dictionary<string, object?>>> EjecutarAsync(
+        string sql, string? correo, CancellationToken cancellationToken)
     {
         var resultados =
             new List<Dictionary<string, object?>>();
@@ -55,11 +72,12 @@ public class SqlQueryService : ISqlQueryService
             new SqlCommand(sql, connection);
 
         command.CommandTimeout = 15;
+        if (correo is not null) command.Parameters.Add("@correo", SqlDbType.NVarChar, 254).Value = correo;
 
         await using var reader =
             await command.ExecuteReaderAsync(cancellationToken);
 
-        while (await reader.ReadAsync(cancellationToken))
+        while (resultados.Count < 101 && await reader.ReadAsync(cancellationToken))
         {
             var fila =
                 new Dictionary<string, object?>();

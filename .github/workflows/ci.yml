@@ -1,0 +1,24 @@
+name: Validacion del prototipo
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.401
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - run: dotnet restore SynerGy-Rag-Inventario.slnx --locked-mode
+      - run: dotnet build SynerGy-Rag-Inventario.slnx --no-restore --configuration Release
+      - run: dotnet test SynerGy-Rag-Inventario.slnx --no-build --configuration Release --logger trx --results-directory artifacts/test-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pruebas-automaticas
+          path: artifacts/test-results

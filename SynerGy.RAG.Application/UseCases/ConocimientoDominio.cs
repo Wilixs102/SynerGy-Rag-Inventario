@@ -13,15 +13,15 @@ public static class ConocimientoDominio
     private static readonly (string[] Claves, string Pista)[] Entradas =
     [
         (["laptop", "portatil", "notebook"],
-            "Laptop: filtrar con (NombreCategoria LIKE '%LAPTOP%' OR Descripcion LIKE '%LAPTOP%')."),
+            ConsultasInventario.Laptop.Regla + " Predicado SQL: " + ConsultasInventario.Laptop.Predicado),
         (["celular", "telefono", "movil", "smartphone", "iphone"],
             "Celular: filtrar con (NombreCategoria LIKE '%MÓVIL%' OR Descripcion LIKE '%CELULAR%')."),
         (["monitor", "pantalla"],
             "Monitor: filtrar con (NombreCategoria LIKE '%MONITOR%' OR Descripcion LIKE '%MONITOR%')."),
         (["teclado"],
             "Teclado: filtrar con (NombreCategoria LIKE '%TECLADO%' OR Descripcion LIKE '%TECLADO%')."),
-        (["mouse", "raton"],
-            "Mouse: filtrar con (NombreCategoria LIKE '%MOUSE%' OR Descripcion LIKE '%MOUSE%')."),
+        (["mouse", "raton", "mice"],
+            ConsultasInventario.Mouse.Regla + " Predicado SQL: " + ConsultasInventario.Mouse.Predicado),
         (["cargador"],
             "Cargador: filtrar con (NombreCategoria LIKE '%CARGADOR%' OR Descripcion LIKE '%CARGADOR%')."),
         (["auricular", "audifono", "diadema"],

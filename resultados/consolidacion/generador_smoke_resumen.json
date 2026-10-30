@@ -1,0 +1,37 @@
+{
+  "fecha_corte": "2026-10-29",
+  "preguntas": 3,
+  "repeticiones": 1,
+  "generaciones": 9,
+  "alcance": "Prueba de regresión sobre tres preguntas del conjunto de desarrollo. No es un conjunto independiente ni una evaluación de ejecución SQL.",
+  "criterio": "Se aceptó COLLATE entre la columna y LIKE para reconocer SQL equivalente; no se modificaron las generaciones ni sus latencias. Los indicadores históricos de las 270 generaciones se conservaron.",
+  "configs": {
+    "baseline": {
+      "intentos": 3,
+      "aceptadas_parser": 3,
+      "componentes_ok": 2,
+      "proporcion_componentes": 0.6666666666666666,
+      "latencia_mediana_ms": 6276,
+      "latencia_min_ms": 6142,
+      "latencia_max_ms": 46166
+    },
+    "prompt_enriquecido": {
+      "intentos": 3,
+      "aceptadas_parser": 3,
+      "componentes_ok": 3,
+      "proporcion_componentes": 1,
+      "latencia_mediana_ms": 6068,
+      "latencia_min_ms": 5511,
+      "latencia_max_ms": 75824
+    },
+    "ajustado": {
+      "intentos": 3,
+      "aceptadas_parser": 3,
+      "componentes_ok": 3,
+      "proporcion_componentes": 1,
+      "latencia_mediana_ms": 6588,
+      "latencia_min_ms": 5682,
+      "latencia_max_ms": 31521
+    }
+  }
+}

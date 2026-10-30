@@ -1,0 +1,16 @@
+{
+  "fecha_corte": "2026-10-29",
+  "transformacion": "Sustitución de correos y sus patrones por identidades example.test. No se regeneraron las 270 respuestas.",
+  "metricas_historicas": "Se conservan los indicadores sql_valida, componentes_ok y latencia_ms originales.",
+  "identidades_sustituidas": 2,
+  "archivos": [
+    {
+      "ruta": "tests\\SynerGy.RAG.Evaluacion\\preguntas.json",
+      "sha256_publicado": "7c26d4a64c3f374456b26f4af7709d3b14ac686fe2a3c446cc4661052fc73499"
+    },
+    {
+      "ruta": "resultados\\resultados.csv",
+      "sha256_publicado": "f160c06f50867179120c8932169deda109c1c40622067b607e95802adc242ae6"
+    }
+  ]
+}

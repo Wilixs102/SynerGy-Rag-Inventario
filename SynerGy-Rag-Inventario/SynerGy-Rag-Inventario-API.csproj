@@ -21,4 +21,9 @@
     <ProjectReference Include="..\SynerGy.RAG.Infrastructure\SynerGy.RAG.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\data\catalogo-inventario.json" Link="data\catalogo-inventario.json"
+             CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

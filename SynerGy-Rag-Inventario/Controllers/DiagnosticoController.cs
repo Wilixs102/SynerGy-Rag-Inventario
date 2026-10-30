@@ -39,8 +39,6 @@ public class DiagnosticoController : ControllerBase
             new
             {
                 conectado = true,
-                baseDatos = "ActivosInformaticos",
-                usuario = "rag_reader",
                 mensaje = "Conexión API -> SQL Server correcta."
             }
         );

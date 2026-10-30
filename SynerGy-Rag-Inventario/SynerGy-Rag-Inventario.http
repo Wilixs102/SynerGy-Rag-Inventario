@@ -1,6 +1,9 @@
 @SynerGy_Rag_Inventario_HostAddress = http://localhost:5225
 
-GET {{SynerGy_Rag_Inventario_HostAddress}}/weatherforecast/
+POST {{SynerGy_Rag_Inventario_HostAddress}}/api/preguntas
+Content-Type: application/json
 Accept: application/json
+
+{"pregunta":"Dame el total de las laptops"}
 
 ###

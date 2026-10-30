@@ -1,0 +1,32 @@
+{
+  "fecha_corte": "2026-10-29",
+  "dotnet_sdk": "10.0.401",
+  "ollama": "ollama version is 0.40.13",
+  "sistema": "Windows",
+  "cpu": "12th Gen Intel(R) Core(TM) i7-1255U",
+  "procesadores_logicos": 12,
+  "ram_gb": 15.6,
+  "inferencia_validada": "CPU",
+  "modelos": [
+    {
+      "name": "nomic-embed-text:latest",
+      "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "size": 274302450
+    },
+    {
+      "name": "qwen2.5-coder:7b",
+      "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "size": 4683087561
+    }
+  ],
+  "modelo_generacion": "qwen2.5-coder:7b",
+  "temperatura_generacion": 0.1,
+  "modelo_embeddings": "nomic-embed-text",
+  "dimensiones": 768,
+  "top_k": 5,
+  "distancia_maxima": 0.65,
+  "catalogo": "inventario-v2",
+  "actas": "actas-v1",
+  "sql_server": "2025 (17.x)",
+  "datos_publicados": "No se incluyen conexiones, contraseñas, nombres de equipo, custodios ni resultados operacionales."
+}
