@@ -67,6 +67,13 @@ public class InventarioYActasTests
         Assert.Single(respuesta.Filas);
     }
 
+    [Theory]
+    [InlineData("Dame el acta de entrega de Ana López")]
+    [InlineData("Busca actas: Dame el acta de entrega de Ana López")]
+    [InlineData("Busca actas de devolución para Ana López")]
+    public void ActaSingularYPluralResuelvenLaPersona(string pregunta)
+        => Assert.Equal("Ana López", DetectarCustodio.Extraer(pregunta)?.Texto);
+
     [Fact]
     public void TextoDeActaSeLimpiaSinIdentidadesNiHtml()
     {

@@ -87,6 +87,8 @@ builder.Services.AddSingleton<ISqlValidator>(
 builder.Services.AddSingleton(new RagOptions(EstrategiaPrompt.Ajustado,
     Temperature: builder.Configuration.GetValue("Rag:Temperature", 0.1),
     UsarConsultasValidadas: builder.Configuration.GetValue("Rag:UsarConsultasValidadas", true)));
+builder.Services.AddSingleton(new CacheSqlGenerado(TimeSpan.FromSeconds(
+    Math.Clamp(builder.Configuration.GetValue("Rag:CacheSqlSegundos", 300), 0, 3600))));
 builder.Services.AddScoped<IRagService, RagService>();
 
 var app = builder.Build();

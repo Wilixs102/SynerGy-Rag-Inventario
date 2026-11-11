@@ -1,0 +1,96 @@
+{
+  "fecha": "2026-11-04",
+  "alcance": "Comprobación local seleccionada, secuencial, sin control experimental de carga o calentamiento; no representa p95 ni exactitud global. Tiempos informados por la API.",
+  "casos_generales": [
+    {
+      "pregunta": "Dame el total de las laptops",
+      "repeticion": 1,
+      "antes_ms": 2366,
+      "despues_ms": 1356,
+      "sql_reutilizado": false,
+      "resultados_coinciden": true,
+      "sin_error": true
+    },
+    {
+      "pregunta": "Dame el total de las laptops",
+      "repeticion": 2,
+      "antes_ms": 207,
+      "despues_ms": 86,
+      "sql_reutilizado": false,
+      "resultados_coinciden": true,
+      "sin_error": true
+    },
+    {
+      "pregunta": "Cuantos mouses hay",
+      "repeticion": 1,
+      "antes_ms": 232,
+      "despues_ms": 84,
+      "sql_reutilizado": false,
+      "resultados_coinciden": true,
+      "sin_error": true
+    },
+    {
+      "pregunta": "Cuantos mouses hay",
+      "repeticion": 2,
+      "antes_ms": 213,
+      "despues_ms": 120,
+      "sql_reutilizado": false,
+      "resultados_coinciden": true,
+      "sin_error": true
+    },
+    {
+      "pregunta": "Cuantos equipos hay en total",
+      "repeticion": 1,
+      "antes_ms": 23598,
+      "despues_ms": 17648,
+      "sql_reutilizado": false,
+      "resultados_coinciden": true,
+      "sin_error": true
+    },
+    {
+      "pregunta": "Cuantos equipos hay en total",
+      "repeticion": 2,
+      "antes_ms": 2920,
+      "despues_ms": 235,
+      "sql_reutilizado": true,
+      "resultados_coinciden": true,
+      "sin_error": true
+    }
+  ],
+  "consulta_companero": {
+    "identidad": "Omitida en evidencia pública",
+    "antes_ms": 98843,
+    "despues": [
+      {
+        "apiMs": 2924,
+        "metodo": "consulta_validada",
+        "error": false,
+        "personaResuelta": true,
+        "aclaracion": false,
+        "contextos": 0,
+        "mismosEquipos": true
+      },
+      {
+        "apiMs": 1020,
+        "metodo": "consulta_validada",
+        "error": false,
+        "personaResuelta": true,
+        "aclaracion": false,
+        "contextos": 0,
+        "mismosEquipos": true
+      }
+    ],
+    "nota": "Dos formulaciones equivalentes; el primer intento optimizado se realizó después de reiniciar la API."
+  },
+  "pruebas_automaticas": {
+    "superadas": 110,
+    "fallidas": 0
+  },
+  "configuracion": {
+    "cache_sql_segundos": 300,
+    "capacidad_cache": 128,
+    "ollama_keep_alive": "15m",
+    "modelo": "qwen2.5-coder:7b",
+    "ejecucion": "CPU"
+  }
+}

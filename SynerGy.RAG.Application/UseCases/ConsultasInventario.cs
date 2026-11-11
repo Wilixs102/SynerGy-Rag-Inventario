@@ -7,6 +7,7 @@ public record ConsultaValidada(string Sql, string Explicacion);
 
 public static class ConsultasInventario
 {
+    private const string ColumnasDetalle = "NombreCategoria, NombreMarca, NombreModelo, Serie, Descripcion, IdEquipo, IdEstadoAsignacion, FechaAsignacion, FechaCompra, ValorCompra, NumeroFactura, Qr, IdUbicacion, IdEstadoAsignacionHistorial, FechaDevolucion, usuario_custodio_activo";
     public static readonly TipoInventario Laptop = new("laptops",
         @"\b(laptops?|portatil(?:es)?|notebooks?)\b",
         "(NombreCategoria COLLATE Latin1_General_100_CI_AI = N'LAPTOP' OR (NombreCategoria COLLATE Latin1_General_100_CI_AI = N'COMPUTADOR' AND Descripcion COLLATE Latin1_General_100_CI_AI LIKE N'%Laptop%'))",
@@ -30,10 +31,13 @@ public static class ConsultasInventario
     public static ConsultaValidada? Crear(string pregunta, string? referenciaPersona = null)
     {
         var tipos = Reconocer(pregunta);
-        if (tipos.Count == 0) return null;
+        if (tipos.Count == 0 && referenciaPersona is null) return null;
         var texto = ConocimientoDominio.Normalizar(pregunta);
         if (referenciaPersona is not null) texto = texto.Replace(ConocimientoDominio.Normalizar(referenciaPersona), " ");
         texto = texto.Replace("por favor", " ");
+        // Solicitar columnas no cambia los filtros. Cualquier valor adicional (DELL, fechas, etc.)
+        // permanece en el texto y obliga a usar el generador completo.
+        texto = Regex.Replace(texto, @"\b(?:incluye|incluyendo|mostrando|con)\s+(?:(?:marca|modelo|serie|descripcion|detalle|detalles|y|la|el|su|sus)\b\s*[,;]?\s*)+", " ");
         var estados = new (string Patron, int Id)[]
         {
             (@"\b(asignad[oa]s?)\b", 2), (@"\b(disponibles?|asignables?|libres?)\b", 1),
@@ -51,6 +55,15 @@ public static class ConsultasInventario
         // Si hay marca, fecha, negación, comparación u otro filtro, dejarlo al generador completo.
         var permitidas = new HashSet<string>(("me puedes puede podria podrias ayudar ayudame mostrar muestrame muestra listar lista listado dame dar entregar entregame entregue quiero necesito ver buscar busca buscame cuanto cuantos cuanta cuantas cantidad total numero hay existen tenemos tengo son de del la el las los un una unos unas todos todas todo equipos equipo activos activo dispositivos dispositivo computador computadora computadoras computadoras portatiles en estado a al para y o tipo companero companera colaborador colaboradora custodio custodia que tiene estan se encuentran favor" ).Split(' '));
         if (Regex.Matches(texto, @"[\p{L}\d@]+").Any(m => !permitidas.Contains(m.Value))) return null;
+        if (tipos.Count == 0)
+        {
+            if (estados.Any(e => e != 2)) return null;
+            // La identidad ya fue resuelta. El ejecutor restringe la fuente por correo parametrizado.
+            var seleccion = esConteo ? "COUNT(DISTINCT IdEquipo) AS total"
+                : $"TOP ({top}) {ColumnasDetalle}";
+            return new($"SELECT {seleccion} FROM dbo.VistaEquipo WHERE IdEstadoAsignacion = 2" +
+                (esConteo ? "" : " ORDER BY IdEquipo"), "Equipos actualmente asignados al compañero identificado en el directorio.");
+        }
         var filtroEstado = estados.Count == 1 ? $" AND IdEstadoAsignacion = {estados[0]}" : "";
         var explicacion = string.Join(" ", tipos.Select(t => t.Regla));
         if (esConteo)
@@ -60,6 +73,6 @@ public static class ConsultasInventario
             return new(sql, explicacion);
         }
         var filtros = string.Join(" OR ", tipos.Select(t => t.Predicado));
-        return new($"SELECT TOP ({top}) IdEquipo, Serie, NombreMarca, NombreModelo, NombreCategoria, Descripcion, IdEstadoAsignacion, usuario_custodio_activo FROM dbo.VistaEquipo WHERE ({filtros}){filtroEstado} ORDER BY IdEquipo", explicacion);
+        return new($"SELECT TOP ({top}) {ColumnasDetalle} FROM dbo.VistaEquipo WHERE ({filtros}){filtroEstado} ORDER BY IdEquipo", explicacion);
     }
 }

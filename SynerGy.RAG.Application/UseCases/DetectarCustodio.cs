@@ -10,7 +10,7 @@ public static class DetectarCustodio
         var correo = Regex.Match(pregunta, @"[\w.!#$%&'*+/=?^`{|}~-]+@[\w.-]+\.[\p{L}]{2,}");
         if (correo.Success) return new(correo.Value, true);
         var persona = Regex.Match(pregunta,
-            @"(?:asignad[oa]s?\s+(?:a|de|para)|(?:equipos|activos|dispositivos)\s+(?:de|del|para)|actas(?:\s+de\s+(?:entrega|devoluci[oó]n))?\s+(?:de|del|para)|(?:que\s+)?tiene)\s+(?:(?:el|la|al)\s+)?(?:(?:compañero|compañera|colaborador|colaboradora|custodio|custodia)\s+)?(?<nombre>.+)",
+            @"(?:asignad[oa]s?\s+(?:a|de|para)|(?:equipos|activos|dispositivos)\s+(?:de|del|para)|actas?(?:\s+de\s+(?:entrega|devoluci[oó]n))?\s+(?:de|del|para)|(?:que\s+)?tiene(?:\s+asignad[oa]s?(?:\s+(?:a|de|para))?)?)\s+(?:(?:el|la|al)\s+)?(?:(?:compañero|compañera|colaborador|colaboradora|custodio|custodia)\s+)?(?<nombre>.+)",
             RegexOptions.IgnoreCase);
         if (!persona.Success) return null;
         var nombre = Regex.Split(persona.Groups["nombre"].Value,

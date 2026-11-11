@@ -22,13 +22,19 @@ Las aclaraciones no invocan al generador. Un top-K de actas no es un total exact
 flowchart LR
   P[Pregunta] --> I[Identidad e intención]
   I --> V[Contexto vectorial en SQL Server]
-  V --> T[Consulta controlada o generación con Ollama]
+  I --> C[Consulta controlada]
+  C --> S[ScriptDom]
+  V --> T[Ollama o SQL validado reutilizado]
   T --> S[ScriptDom]
   S --> E[VistaEquipo]
   I --> A[Búsqueda vectorial de Acta]
   E --> R[Resultados y evidencia]
   A --> R
 ```
+
+## Optimización local del 04/11/2026
+
+Las consultas habituales y las listas/conteos simples de un compañero identificado usan SQL controlado sin esperar embeddings ni generación. Las preguntas generales conservan la recuperación vectorial; su SQL validado puede reutilizarse durante cinco minutos para el mismo prompt, contexto y temperatura. Cada petición vuelve a validar el SQL y consulta los datos actuales. La API indica `sqlReutilizado`; el harness experimental siempre genera sus muestras. Ver [mediciones y límites](docs/rendimiento.md).
 
 ## Demostración inmediata de la interfaz
 
@@ -202,6 +208,8 @@ output/pdf/                     Avance del documento final en PDF
 
 ## Documento y anexos
 
+- [Borrador avanzado del documento final, revisión del 04/11/2026](output/pdf/Borrador_Avanzado_SynerGy_RAG.pdf). Generación: `python scripts/generar_borrador_avanzado.py`. Conserva el corte de evidencias del 29/10/2026 e incorpora revisión metodológica y análisis de errores.
+
 - [Avance del documento final](output/pdf/Avance_Consolidado_SynerGy_RAG.pdf).
 - [Matriz de requisitos de la entrega](docs/matriz-entrega.md).
 - [Guía de consultas y actas](docs/inventario-y-actas.md).
@@ -216,3 +224,20 @@ Para generar el PDF desde sus fuentes y evidencias: `python scripts/generar_avan
 El prototipo está orientado a pruebas locales autorizadas. **No incorpora autenticación corporativa ni autorización por usuario.** No publicarlo como servicio accesible a terceros con datos reales. ScriptDom limita las fuentes y funciones, pero los permisos SQL y la supervisión siguen siendo necesarios. El enmascaramiento de la interfaz es visual y no sustituye controles de acceso ni anonimiza la API.
 
 No se midieron aún una evaluación ciega de 120 preguntas, relevancia/Recall@K de actas, pruebas de usuarios ni reducción del tiempo del proceso humano. No se declara cumplido el objetivo global de exactitud ni el p95 de ocho segundos en todas las rutas. Ver [SECURITY.md](SECURITY.md), la [bitácora](CHANGELOG.md) y el PDF para los pendientes.
+
+Búsqueda avanzada visible: selecciona **Búsqueda avanzada de actas** en la pantalla
+para recuperar textos por similitud y revisar la evidencia de SQL Server.
+Consulta [la guía de demostración](docs/inventario-y-actas.md) y el
+[script de verificación en la base auxiliar](docs/sql/verificar_busqueda_vectorial.sql).
+
+
+### Interfaz para presentación
+
+Las tarjetas compactas conservan marca, modelo, serie, estado y detalle desplegable.
+El tiempo total de búsqueda se mide en el navegador e incluye la espera de la respuesta;
+no representa únicamente la duración del SQL. El panel de búsquedas muestra hasta 50
+consultas de la pestaña, sus estados, rutas y una gráfica de las últimas 10 duraciones.
+El promedio incluye solo las consultas completadas. El historial usa `sessionStorage`,
+se conserva al recargar y no constituye una auditoría global ni se almacena en SQL Server.
+La vista para anexos oculta las preguntas del historial. El botón «Limpiar historial»
+elimina esos registros de la pestaña. El acceso lateral «Evidencia técnica» fue retirado.

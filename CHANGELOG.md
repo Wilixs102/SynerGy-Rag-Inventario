@@ -2,6 +2,13 @@
 
 Formato: fecha — cambio — motivo.
 
+## 2026-11-04 — Rendimiento de consultas locales
+- Consultas controladas antes de embeddings; ruta rápida para listar y contar equipos de un compañero ya identificado.
+- Reconocimiento de «tiene asignado/asignados» y preservación de filtros adicionales para la ruta del generador.
+- Caché acotada de SQL validado, con revalidación y nueva ejecución de los datos en cada petición; evaluación experimental sin caché.
+- Permanencia configurable del modelo en Ollama y evidencia local de tiempos sin identidades corporativas.
+- 110 pruebas superadas. Ver docs/rendimiento.md para resultados y limitaciones.
+
 ## 2026-10-29 — Consolidación de entrega académica v0.2.0
 - 95 pruebas superadas, incluidos 30 casos SQL adversariales; ocho comprobaciones funcionales y nueve generaciones actuales documentadas.
 - README completo, datos ficticios, demo visual identificada, matriz de entrega y avance del documento final en PDF con anexos.
@@ -46,3 +53,19 @@ Formato: fecha — cambio — motivo.
 
 ## Anterior
 - Estructura de la solución (API, Application, Domain, Infrastructure) y conexión a SQL Server (`DiagnosticoController`).
+
+## 2026-11-05 — Búsqueda avanzada de actas visible
+
+- Selector explícito de inventario o actas, con búsqueda por tema sin exigir la palabra acta.
+- Evidencia de VECTOR_DISTANCE, modelo, dimensiones, versión, top-K y umbral en la respuesta e interfaz.
+- Resultados de actas con texto recuperado y distancia coseno junto al número, tipo y fecha.
+- Corrección de resolución de persona en «el acta de entrega de Nombre Apellido» y pruebas de regresión.
+- Script SQL de solo lectura para inspeccionar vectores y demostrar búsqueda de vecinos en la base auxiliar.
+
+
+## 2026-11-09 — Interfaz de presentación
+
+- Tarjetas de equipos compactas con detalle desplegable.
+- Tiempo total medido en el navegador y panel con historial por pestaña, estados, promedio y gráfica.
+- Conservación del historial al recargar y ocultación de preguntas en vista para anexos.
+- Retirado el botón lateral de evidencia técnica.

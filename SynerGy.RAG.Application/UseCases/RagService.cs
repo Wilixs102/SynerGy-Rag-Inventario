@@ -19,6 +19,7 @@ public class RagService : IRagService
     private readonly IRecuperadorContexto? _contexto;
     private readonly IDirectorioCustodios? _directorio;
     private readonly IBuscadorActas? _actas;
+    private readonly CacheSqlGenerado? _cache;
 
     public RagService(
         IOllamaClient ollama,
@@ -27,7 +28,8 @@ public class RagService : IRagService
         RagOptions options,
         IRecuperadorContexto? contexto = null,
         IDirectorioCustodios? directorio = null,
-        IBuscadorActas? actas = null)
+        IBuscadorActas? actas = null,
+        CacheSqlGenerado? cache = null)
     {
         _ollama = ollama;
         _validator = validator;
@@ -36,6 +38,7 @@ public class RagService : IRagService
         _contexto = contexto;
         _directorio = directorio;
         _actas = actas;
+        _cache = cache;
     }
 
     public async Task<(string Sql, long LatenciaMs)> GenerarSqlAsync(
@@ -46,25 +49,33 @@ public class RagService : IRagService
         return (resultado.Sql, resultado.LatenciaMs);
     }
 
-    private async Task<(string Sql, long LatenciaMs, IReadOnlyList<ContextoInventario> Contexto, ConsultaValidada? Plantilla)>
+    private async Task<(string Sql, long LatenciaMs, IReadOnlyList<ContextoInventario> Contexto, ConsultaValidada? Plantilla, bool DesdeCache)>
         GenerarConContextoAsync(string pregunta, CancellationToken cancellationToken, Custodio? custodio = null,
             string? referenciaPersona = null, bool permitirPlantilla = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(pregunta);
+        cancellationToken.ThrowIfCancellationRequested();
         var sw = Stopwatch.StartNew();
+        var plantilla = permitirPlantilla && _options.UsarConsultasValidadas
+            ? ConsultasInventario.Crear(pregunta, referenciaPersona) : null;
+        if (plantilla is not null) return (plantilla.Sql, sw.ElapsedMilliseconds, [], plantilla, false);
         IReadOnlyList<ContextoInventario> contexto = _contexto is null ||
             _options.Estrategia == EstrategiaPrompt.Baseline
             ? [] : await _contexto.RecuperarAsync(pregunta, cancellationToken);
-        var plantilla = permitirPlantilla && _options.UsarConsultasValidadas
-            ? ConsultasInventario.Crear(pregunta, referenciaPersona) : null;
-        if (plantilla is not null) return (plantilla.Sql, sw.ElapsedMilliseconds, contexto, plantilla);
         var prompt = ConstruirPrompt(pregunta, contexto);
         if (custodio is not null)
             prompt = "Custodio confirmado por el directorio autorizado: " + custodio.Correo +
                 ". Para esta consulta usa usuario_custodio_activo = '" + custodio.Correo.Replace("'", "''") +
                 "' AND IdEstadoAsignacion = 2. No inventes otro correo.\n" + prompt;
-        var salida = await _ollama.GenerarAsync(prompt, _options.Temperature, cancellationToken);
-        return (LimpiarSql(salida), sw.ElapsedMilliseconds, contexto, null);
+        // Solo la API reutiliza SQL. El harness siempre vuelve a generar sus muestras.
+        var clave = permitirPlantilla && _cache is not null ? CacheSqlGenerado.Clave(prompt, _options.Temperature) : null;
+        cancellationToken.ThrowIfCancellationRequested();
+        if (clave is not null && _cache!.Buscar(clave) is { } guardado)
+            return (guardado, sw.ElapsedMilliseconds, contexto, null, true);
+        var salida = LimpiarSql(await _ollama.GenerarAsync(prompt, _options.Temperature, cancellationToken));
+        if (clave is not null && !cancellationToken.IsCancellationRequested && _validator.Validar(salida) is null)
+            _cache!.Guardar(clave, salida);
+        return (salida, sw.ElapsedMilliseconds, contexto, null, false);
     }
 
     public async Task<RespuestaRag> PreguntarAsync(
@@ -76,6 +87,7 @@ public class RagService : IRagService
         IReadOnlyList<ContextoInventario> contexto = [];
         Custodio? custodio = null;
         ConsultaValidada? plantilla = null;
+        bool desdeCache = false;
 
         try
         {
@@ -102,7 +114,7 @@ public class RagService : IRagService
                 if (_actas is null) return new(pregunta, null, [], "La búsqueda de actas no está configurada.", sw.ElapsedMilliseconds);
                 return await _actas.BuscarAsync(pregunta, custodio, cancellationToken);
             }
-            (sql, _, contexto, plantilla) = await GenerarConContextoAsync(pregunta, cancellationToken, custodio,
+            (sql, _, contexto, plantilla, desdeCache) = await GenerarConContextoAsync(pregunta, cancellationToken, custodio,
                 custodio is null ? null : solicitud?.Texto, permitirPlantilla: true);
 
             var rechazo = _validator.Validar(sql);
@@ -114,7 +126,7 @@ public class RagService : IRagService
                 : await _sql.ConsultarCustodioAsync(sql, custodio.Correo, cancellationToken);
             return new RespuestaRag(pregunta, sql, filas.Take(MaxFilas).ToList(), null, sw.ElapsedMilliseconds)
                 { Contexto = contexto, Custodio = custodio, Truncado = filas.Count > MaxFilas,
-                    MetodoGeneracion = plantilla is null ? "modelo_local" : "consulta_validada",
+                    MetodoGeneracion = plantilla is null ? "modelo_local" : "consulta_validada", SqlReutilizado = desdeCache,
                     Mensaje = string.Join(" ", new[] {custodio is null ? null : $"Consulta de equipos asignados a {custodio.Nombre}.", plantilla?.Explicacion}.Where(m => m is not null)) };
         }
         catch (Exception ex) when (ex is not OperationCanceledException)

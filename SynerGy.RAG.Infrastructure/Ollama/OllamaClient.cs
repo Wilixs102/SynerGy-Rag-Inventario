@@ -27,6 +27,7 @@ public class OllamaClient : IOllamaClient
             model = _options.Modelo,
             prompt,
             stream = false,
+            keep_alive = _options.KeepAlive,
             options = new { temperature = temperature ?? _options.Temperature }
         };
 

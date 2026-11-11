@@ -13,7 +13,8 @@
   colaboradores. Los filtros de custodio se siguen resolviendo con el directorio.
 
 Las preguntas habituales de listas y cantidades usan consultas controladas y verificadas,
-además de la recuperación vectorial del catálogo. La API indica
+sin invocar embeddings ni al generador. Las consultas fuera de esas plantillas
+pueden recuperar contexto vectorial del catálogo. La API indica
 `metodoGeneracion=consulta_validada` y la interfaz identifica esa procedencia. No se
 atribuye esa consulta al modelo de lenguaje. Si hay filtros no soportados por la
 plantilla (marca, fechas, negación, agrupaciones), se conserva el generador con las
@@ -81,3 +82,50 @@ de actas. Los resultados históricos del modelo no describen automáticamente es
 nuevas rutas. Para actas, etiquetar coincidencias esperadas y medir relevancia/Recall@K,
 además de verificar los filtros. Para stock, contrastar resultados contra consultas
 SQL revisadas, incluyendo accesorios y kits como casos de regresión.
+
+## Demostración visible para el tutor (5 de noviembre de 2026)
+
+1. Abre `http://localhost:5225/` y selecciona **Búsqueda avanzada de actas**.
+2. Escribe `responsabilidad por cuidado de equipos` y pulsa **Buscar actas por significado**.
+   En este modo no es necesario incluir la palabra acta. El botón de inventario permite
+   volver a consultar equipos, marca, modelo, serie y totales actuales.
+3. Revisa número, tipo, fecha, texto relacionado y distancia coseno. El panel técnico
+   muestra modelo, dimensiones, tabla, versión, top-K y umbral realmente configurados.
+   Los fragmentos recuperados se despliegan automáticamente.
+4. En SQL Server Management Studio, abre la base auxiliar `RAG_DB` y ejecuta
+   `docs/sql/verificar_busqueda_vectorial.sql`. El script es de solo lectura:
+   comprueba cantidad de vectores, tipo SQL de Embedding, valores almacenados y
+   vecinos de un acta de referencia. La última consulta demuestra acta contra actas;
+   en la aplicación el vector de consulta proviene de la pregunta del usuario.
+
+Se encontraron inicialmente 257 entradas y se actualizó `actas-v1` a **263 actas**
+el 5 de noviembre de 2026. La prueba posterior recuperó una acta para una persona
+resuelta y cinco coincidencias para una pregunta temática. La evidencia sin nombres
+ni textos corporativos está en `resultados/busqueda-vectorial-2026-11-05.json`.
+Los tiempos registrados son muestras funcionales, no un benchmark estadístico.
+Este número describe el catálogo almacenado, no necesariamente todas las actas vigentes
+hoy. Cuando cambie el texto de origen, vuelve a ejecutar `--indexar-actas`; la indexación
+no se realiza automáticamente al buscar. Los filtros de actas activas y custodio sí
+se consultan en el origen en cada búsqueda.
+
+Explicación para la defensa: «Convertimos el texto de las actas y la pregunta en
+embeddings de 768 dimensiones con nomic-embed-text ejecutado localmente en Ollama.
+SQL Server almacena los vectores y calcula su distancia coseno para recuperar las
+actas más relacionadas. La búsqueda del inventario actual y sus conteos usa SQL;
+las actas aportan recuperación semántica sobre información histórica».
+
+Esta es búsqueda vectorial exacta con `VECTOR_DISTANCE`, no un índice aproximado ANN
+ni entrenamiento propio del modelo. Una distancia menor indica mayor cercanía;
+no equivale a una probabilidad de respuesta correcta. Si muchas actas repiten las
+mismas cláusulas, pueden empatar en distancia; el identificador desempata. La utilidad
+semántica debe evaluarse con preguntas y actas relevantes etiquetadas; el funcionamiento
+técnico por sí solo no acredita precisión o Recall@K.
+
+Referencia técnica: [Microsoft: VECTOR_DISTANCE](https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql?view=sql-server-ver17).
+
+La API admite `POST /api/preguntas` con
+`{"pregunta":"responsabilidad por cuidado de equipos","modo":"actas"}`.
+La respuesta incluye `busquedaVectorial` con la evidencia de ejecución. El campo `sql`
+permanece vacío porque esta ruta no genera SQL con un LLM. No se habilitó escritura de
+actas ni un botón público de reindexación. Los textos recuperados pueden conservar
+información de texto libre: revisar siempre las capturas para anexos.

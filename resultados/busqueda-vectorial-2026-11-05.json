@@ -1,0 +1,59 @@
+{
+  "Fecha": "2026-11-05",
+  "VectoresActasIndexados": 263,
+  "PruebasUnitariasCorrectas": 116,
+  "Casos": [
+    {
+      "Caso": "acta_por_persona_singular",
+      "Error": null,
+      "Metodo": "busqueda_vectorial_actas",
+      "PersonaResuelta": true,
+      "ActasElegibles": 1,
+      "Filas": 1,
+      "LatenciaMs": 3126,
+      "Distancias": [
+        0.33843523263931274
+      ],
+      "Evidencia": {
+        "tabla": "dbo.RagContextoInventario",
+        "versionCatalogo": "actas-v1",
+        "modelo": "nomic-embed-text",
+        "dimensiones": 768,
+        "topK": 5,
+        "distanciaMaxima": 0.65,
+        "actasElegibles": 1,
+        "metrica": "cosine",
+        "funcion": "VECTOR_DISTANCE",
+        "estrategia": "exacta"
+      }
+    },
+    {
+      "Caso": "tema_sin_palabra_acta",
+      "Error": null,
+      "Metodo": "busqueda_vectorial_actas",
+      "PersonaResuelta": false,
+      "ActasElegibles": 263,
+      "Filas": 5,
+      "LatenciaMs": 324,
+      "Distancias": [
+        0.27334851026535034,
+        0.27336585521698,
+        0.27539634704589844,
+        0.27539634704589844,
+        0.27539634704589844
+      ],
+      "Evidencia": {
+        "tabla": "dbo.RagContextoInventario",
+        "versionCatalogo": "actas-v1",
+        "modelo": "nomic-embed-text",
+        "dimensiones": 768,
+        "topK": 5,
+        "distanciaMaxima": 0.65,
+        "actasElegibles": 263,
+        "metrica": "cosine",
+        "funcion": "VECTOR_DISTANCE",
+        "estrategia": "exacta"
+      }
+    }
+  ]
+}

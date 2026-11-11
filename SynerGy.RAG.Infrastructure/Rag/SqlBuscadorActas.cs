@@ -113,9 +113,16 @@ public class SqlBuscadorActas(
             var vector = await embeddings.GenerarEmbeddingAsync(pregunta, cancellationToken);
             contexto = await Almacen().BuscarConIdsAsync(vector, metadatos.Keys.ToList(), cancellationToken);
         }
-        return new(pregunta, null, contexto.Select(c => metadatos[c.Id]).ToList(), null, sw.ElapsedMilliseconds)
+        var filas = contexto.Select(c => new Dictionary<string, object?>(metadatos[c.Id])
+        {
+            ["DistanciaCoseno"] = c.Distancia,
+            ["TextoRelacionado"] = c.Contenido
+        }).ToList();
+        return new(pregunta, null, filas, null, sw.ElapsedMilliseconds)
         {
             Contexto = contexto, Custodio = custodio, MetodoGeneracion = "busqueda_vectorial_actas",
+            BusquedaVectorial = new("dbo.RagContextoInventario", Version, options.Value.ModeloEmbedding,
+                VectorOptions.Dimensiones, options.Value.TopK, options.Value.DistanciaMaxima, metadatos.Count),
             Mensaje = "Actas relacionadas por similitud con su texto. Se muestra hasta el límite configurado; estas coincidencias no son un conteo del inventario ni prueban una asignación actual."
         };
     }

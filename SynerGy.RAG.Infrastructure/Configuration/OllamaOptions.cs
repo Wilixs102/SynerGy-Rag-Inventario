@@ -8,4 +8,5 @@ public class OllamaOptions
     public string Modelo { get; set; } = "qwen2.5-coder:7b";
     public double Temperature { get; set; } = 0.0;
     public int TimeoutSegundos { get; set; } = 300;
+    public string KeepAlive { get; set; } = "15m";
 }
